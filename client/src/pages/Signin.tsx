@@ -1,7 +1,7 @@
 import { FC } from "react"
 
-const Signin: FC = () => {
-  return <div>Signin</div>
+const SignIn: FC = () => {
+  return <div>Sign In</div>
 }
 
-export default Signin
+export default SignIn
