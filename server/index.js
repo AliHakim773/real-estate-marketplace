@@ -6,6 +6,9 @@ const siteRoutes = require("./routes/index.routes")
 
 const app = express()
 
+app.use(cors())
+app.use(express.json())
+
 // Initialize app routes
 siteRoutes(app)
 
