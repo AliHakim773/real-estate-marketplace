@@ -3,6 +3,7 @@ const cors = require("cors")
 const express = require("express")
 const connectToMongoDB = require("./configs/db.config")
 const siteRoutes = require("./routes/index.routes")
+const errorHandlerMiddleware = require("./middlewares/errorHandler.middleware")
 
 const app = express()
 
@@ -18,3 +19,5 @@ app.listen(port, () => {
 
   connectToMongoDB()
 })
+
+app.use(errorHandlerMiddleware)
