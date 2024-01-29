@@ -3,9 +3,19 @@ const bcrypt = require("bcrypt")
 
 const UserSchema = new mongoose.Schema(
   {
-    username: { type: String, required: true, unique: true, trim: true },
-    email: { type: String, required: true, unique: true, trim: true },
-    password: { type: String, required: true, trim: true },
+    username: {
+      type: String,
+      required: "Username is required",
+      unique: "Username already exists",
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: "Email is required",
+      unique: "Email already exists",
+      trim: true,
+    },
+    password: { type: String, required: "Password is required", trim: true },
   },
   { timestamps: true }
 )
