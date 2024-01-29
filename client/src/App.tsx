@@ -15,10 +15,11 @@ import About from "./pages/About"
 import Profile from "./pages/Profile"
 import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
+import Header from "./components/Header"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/'>
+    <Route path='/' element={<Header />}>
       <Route path='home' element={<Home />} />
       <Route path='sign-in' element={<SignIn />} />
       <Route path='sign-up' element={<SignUp />} />
