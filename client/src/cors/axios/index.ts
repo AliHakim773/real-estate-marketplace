@@ -15,6 +15,7 @@ export const sendRequest = async <T>({
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   })
 
   return response.data
