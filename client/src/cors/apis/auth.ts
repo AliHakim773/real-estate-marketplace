@@ -1,5 +1,5 @@
 import { sendRequest } from "../axios"
-import { ISignInData, ISignUpData } from "../types/authTypes"
+import { IGoogleData, ISignInData, ISignUpData } from "../types/authTypes"
 import { IUser, IUserObject } from "../types/userTypes"
 
 const authAPI = {
@@ -14,6 +14,14 @@ const authAPI = {
   signIn: async (data: ISignInData): Promise<IUser> => {
     const res = await sendRequest<ISignInData, IUserObject>({
       route: "auth/signin",
+      method: "POST",
+      body: data,
+    })
+    return res.user
+  },
+  signInWithGoogle: async (data: IGoogleData): Promise<IUser> => {
+    const res = await sendRequest<IGoogleData, IUserObject>({
+      route: "auth/google",
       method: "POST",
       body: data,
     })
