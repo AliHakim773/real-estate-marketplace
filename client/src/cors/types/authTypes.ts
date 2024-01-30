@@ -7,3 +7,9 @@ export interface ISignInData {
   username: string
   password: string
 }
+
+export interface IGoogleData {
+  username: string | null
+  email: string | null
+  photo: string | null
+}
