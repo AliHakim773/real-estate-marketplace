@@ -1,8 +1,11 @@
 import { FC } from "react"
 import { FaSearch } from "react-icons/fa"
 import { Link, NavLink, Outlet } from "react-router-dom"
+import { useAppSelector } from "../../cors/hooks/redux"
+import { extractUserSlice } from "../../cors/redux/userSlice"
 
 const Header: FC = () => {
+  const { currentUser } = useAppSelector(extractUserSlice)
   return (
     <>
       <header className='bg-slate-200 shadow-md'>
@@ -29,7 +32,17 @@ const Header: FC = () => {
               <NavLink to={"about"}>About</NavLink>
             </li>
             <li className='text-slate-700 hover:underline'>
-              <NavLink to={"sign-in"}>Sign In</NavLink>
+              {currentUser ? (
+                <Link to={"/profile"}>
+                  <img
+                    className='rounded-full h-7 w-7 object-cover'
+                    src={currentUser.avatar}
+                    alt='Profile Pic'
+                  />
+                </Link>
+              ) : (
+                <NavLink to={"sign-in"}>Sign In</NavLink>
+              )}
             </li>
           </ul>
         </div>
