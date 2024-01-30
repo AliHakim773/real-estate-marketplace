@@ -1,8 +1,8 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react"
-import { ISignUpData } from "../cors/types/authTypes"
-import { IRequestError } from "../cors/types/axiosTypes"
+import { ISignUpData } from "../../cors/types/authTypes"
+import { IRequestError } from "../../cors/types/axiosTypes"
 import { Link } from "react-router-dom"
-import authAPI from "../cors/apis/auth"
+import authAPI from "../../cors/apis/auth"
 
 const SignUp: FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
