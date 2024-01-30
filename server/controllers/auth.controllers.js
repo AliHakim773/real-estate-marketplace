@@ -17,10 +17,10 @@ const signin = async (req, res, next) => {
   const { username, password } = req.body
   try {
     const validUser = await User.findOne({ username })
-    if (!validUser) next(errorHandler(401, "Wrong Credentials!"))
+    if (!validUser) return next(errorHandler(401, "Wrong Credentials!"))
 
     const isValidPassword = bcrypt.compareSync(password, validUser.password)
-    if (!isValidPassword) next(errorHandler(401, "Wrong Credentials!"))
+    if (!isValidPassword) return next(errorHandler(401, "Wrong Credentials!"))
 
     const { password: hashedPassword, ...userDetails } = validUser._doc
     const token = jwt.sign(userDetails, process.env.JWT_SECRET)
@@ -28,7 +28,9 @@ const signin = async (req, res, next) => {
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        expires: new Date(Date.now() + 60 * 60 * 1000),
+        sameSite: "none",
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000,
       })
       .status(200)
       .send({ user: userDetails })
