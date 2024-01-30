@@ -1,4 +1,7 @@
 const User = require("../models/user.model")
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+const errorHandler = require("../utils/error")
 
 const signup = async (req, res, next) => {
   const { username, email, password } = req.body
@@ -10,4 +13,27 @@ const signup = async (req, res, next) => {
   }
 }
 
-module.exports = { signup }
+const signin = async (req, res, next) => {
+  const { username, password } = req.body
+  try {
+    const validUser = await User.findOne({ username })
+    if (!validUser) next(errorHandler(401, "Wrong Credentials!"))
+
+    const isValidPassword = bcrypt.compareSync(password, validUser.password)
+    if (!isValidPassword) next(errorHandler(401, "Wrong Credentials!"))
+
+    const { password: hashedPassword, ...userDetails } = validUser._doc
+    const token = jwt.sign(userDetails, process.env.JWT_SECRET)
+
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .send({ user: userDetails })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { signup, signin }
