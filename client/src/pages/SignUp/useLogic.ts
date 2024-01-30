@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { ChangeEvent, FormEvent, useState } from "react"
-import { IRequestError } from "../../cors/types/axiosTypes"
+import { IRequestError } from "../../cors/types/requestTypes"
 import { ISignUpData } from "../../cors/types/authTypes"
 import authAPI from "../../cors/apis/auth"
 

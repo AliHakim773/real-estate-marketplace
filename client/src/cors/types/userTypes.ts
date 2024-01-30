@@ -1,4 +1,4 @@
-import { IRequestError } from "./axiosTypes"
+import { IRequestError } from "./requestTypes"
 
 export interface IUser {
   _id: string

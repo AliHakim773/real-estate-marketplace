@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import { ISendRequest } from "../types/axiosTypes"
+import { ISendRequest } from "../types/requestTypes"
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 

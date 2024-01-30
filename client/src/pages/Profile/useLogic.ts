@@ -9,7 +9,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage"
 import { app } from "../../cors/firebase"
-import { IUpdateProfileFormData } from "../../cors/types/axiosTypes"
+import { IUpdateProfileFormData } from "../../cors/types/requestTypes"
 
 const useLogic = () => {
   const fileRef = useRef<HTMLInputElement>(null)
