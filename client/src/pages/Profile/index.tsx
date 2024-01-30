@@ -1,19 +1,53 @@
-import { FC } from "react"
-import { useAppSelector } from "../../cors/hooks/redux"
-import { extractUserSlice } from "../../cors/redux/userSlice"
+import { ChangeEvent, FC } from "react"
+import useLogic from "./useLogic"
 
 const Profile: FC = () => {
-  const { currentUser } = useAppSelector(extractUserSlice)
+  const {
+    formData,
+    isUploading,
+    fileUploadError,
+    filePerc,
+    setFile,
+    currentUser,
+    fileRef,
+  } = useLogic()
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
       <form className='flex flex-col gap-4'>
+        <input
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            if (e.target.files && e.target.files.length > 0) {
+              setFile(e.target.files[0])
+            }
+          }}
+          hidden
+          type='file'
+          ref={fileRef}
+          accept='image/*'
+        />
         <img
-          src={currentUser?.avatar}
+          onClick={() => {
+            if (!isUploading) {
+              fileRef.current?.click()
+            }
+          }}
+          src={formData.avatar || currentUser?.avatar}
           alt='Profile'
           className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
         />
+        <p className='text-sm self-center'>
+          {fileUploadError ? (
+            <span className='text-red-700'>
+              Error in image upload (image must be less than 2 mb)
+            </span>
+          ) : filePerc > 0 && filePerc < 100 ? (
+            <span className='text-slate-7'>{`Uploading ${filePerc}%`}</span>
+          ) : filePerc === 100 ? (
+            <span className='text-green-700'>successefuly uploaded!</span>
+          ) : null}
+        </p>
         <input
           type='text'
           id='username'
