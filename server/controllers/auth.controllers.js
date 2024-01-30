@@ -39,4 +39,52 @@ const signin = async (req, res, next) => {
   }
 }
 
-module.exports = { signup, signin }
+const google = async (req, res, next) => {
+  const { username, email, photo } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (user) {
+      const { password, ...userDetails } = user._doc
+      const token = jwt.sign(userDetails, process.env.JWT_SECRET)
+
+      return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+          maxAge: 24 * 60 * 60 * 1000,
+        })
+        .status(200)
+        .send({ user: userDetails })
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8)
+
+      const newUser = await User.create({
+        username:
+          username.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-4),
+        email,
+        password: generatedPassword,
+        avatar: photo,
+      })
+      const { password: hashedPassword, ...userDetails } = newUser._doc
+      const token = jwt.sign(userDetails, process.env.JWT_SECRET)
+
+      return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+          maxAge: 24 * 60 * 60 * 1000,
+        })
+        .status(200)
+        .send({ user: userDetails })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { signup, signin, google }
