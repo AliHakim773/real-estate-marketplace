@@ -9,3 +9,10 @@ export interface IRequestError {
   statusCode: number
   success: boolean
 }
+
+export interface IUpdateProfileFormData {
+  username: string
+  email: string
+  password: string
+  avatar: string
+}
