@@ -1,0 +1,12 @@
+export interface IUser {
+  _id: string
+  username: string
+  email: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+export interface IUserObject {
+  user: IUser
+}
