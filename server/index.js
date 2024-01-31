@@ -4,12 +4,14 @@ const express = require("express")
 const connectToMongoDB = require("./configs/db.config")
 const siteRoutes = require("./routes/index.routes")
 const errorHandlerMiddleware = require("./middlewares/errorHandler.middleware")
+const cookieParser = require("cookie-parser")
 
 const app = express()
 
 const allowedOrigins = ["http://localhost:5173"]
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(
   cors({
     origin: function (origin, callback) {
