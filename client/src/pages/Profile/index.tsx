@@ -15,6 +15,7 @@ const Profile: FC = () => {
     handleChange,
     handleSubmit,
     handleDeleteAcount,
+    handleSignOut,
   } = useLogic()
 
   return (
@@ -88,7 +89,9 @@ const Profile: FC = () => {
           className='text-red-700 cursor-pointer'>
           Delete account
         </span>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
+          Sign out
+        </span>
       </div>
       <p className='text-red-700 mt-5'>{error && error.message}</p>
     </div>

@@ -5,9 +5,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  deleteUserStart,
-  deleteUserSuccess,
-  deleteUserFailure,
+  signOutStart,
+  signOutSuccess,
+  signOutFailure,
 } from "../../cors/redux/userSlice"
 import {
   UploadTaskSnapshot,
@@ -22,11 +22,10 @@ import {
   IUpdateProfileFormData,
 } from "../../cors/types/requestTypes"
 import userAPI from "../../cors/apis/user"
-// import { useNavigate } from "react-router-dom"
+import authAPI from "../../cors/apis/auth"
 
 const useLogic = () => {
   const dispatch = useAppDispatch()
-  // const navigate = useNavigate()
   const fileRef = useRef<HTMLInputElement>(null)
   const { currentUser, loading, error } = useAppSelector(extractUserSlice)
   const [file, setFile] = useState<File | undefined>(undefined)
@@ -95,16 +94,37 @@ const useLogic = () => {
 
   const handleDeleteAcount = async () => {
     try {
-      dispatch(deleteUserStart())
+      dispatch(signOutStart())
       await userAPI.deleteUser()
-      dispatch(deleteUserSuccess())
+      dispatch(signOutSuccess())
     } catch (e: any) {
       if (e.response && e.response.data) {
         const apiError: IRequestError = e.response.data
-        dispatch(deleteUserFailure(apiError))
+        dispatch(signOutFailure(apiError))
       } else {
         dispatch(
-          deleteUserFailure({
+          signOutFailure({
+            message: "An unexpected error occurred.",
+            statusCode: 500,
+            success: false,
+          })
+        )
+      }
+    }
+  }
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutStart())
+      await authAPI.signOut()
+      dispatch(signOutSuccess())
+    } catch (e: any) {
+      if (e.response && e.response.data) {
+        const apiError: IRequestError = e.response.data
+        dispatch(signOutFailure(apiError))
+      } else {
+        dispatch(
+          signOutFailure({
             message: "An unexpected error occurred.",
             statusCode: 500,
             success: false,
@@ -127,6 +147,7 @@ const useLogic = () => {
     handleChange,
     handleSubmit,
     handleDeleteAcount,
+    handleSignOut,
   }
 }
 
