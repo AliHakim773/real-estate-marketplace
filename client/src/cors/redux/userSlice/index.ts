@@ -40,15 +40,15 @@ export const userSlice = createSlice({
       state.error = action.payload
       state.loading = false
     },
-    deleteUserStart: (state: IUserState) => {
+    signOutStart: (state: IUserState) => {
       state.loading = true
     },
-    deleteUserSuccess: (state: IUserState) => {
+    signOutSuccess: (state: IUserState) => {
       state.currentUser = null
       state.loading = false
       state.error = null
     },
-    deleteUserFailure: (
+    signOutFailure: (
       state: IUserState,
       action: PayloadAction<IRequestError>
     ) => {
@@ -65,9 +65,10 @@ export const {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
-  deleteUserStart,
-  deleteUserSuccess,
-  deleteUserFailure,
+
+  signOutStart,
+  signOutSuccess,
+  signOutFailure,
 } = userSlice.actions
 
 export const user = userSlice.name
