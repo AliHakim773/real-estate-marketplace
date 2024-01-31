@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from "react"
 import useLogic from "./useLogic"
+import { Link } from "react-router-dom"
 
 const Profile: FC = () => {
   const {
@@ -82,6 +83,11 @@ const Profile: FC = () => {
           className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link
+          to={"/create-listing"}
+          className='bg-green-700 text-white text-center rounded-lg p-3 uppercase hover:opacity-95'>
+          Create Listing
+        </Link>
       </form>
       <div className='flex justify-between mt-5'>
         <span
