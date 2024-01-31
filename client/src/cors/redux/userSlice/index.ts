@@ -12,22 +12,42 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    signInStart: (state) => {
+    signInStart: (state: IUserState) => {
       state.loading = true
     },
-    signInSuccess: (state, action: PayloadAction<IUser>) => {
+    signInSuccess: (state: IUserState, action: PayloadAction<IUser>) => {
       state.currentUser = action.payload
       state.loading = false
       state.error = null
     },
-    signInFailure: (state, action) => {
+    signInFailure: (state: IUserState, action) => {
+      state.error = action.payload
+      state.loading = false
+    },
+    updateUserStart: (state: IUserState) => {
+      state.loading = true
+    },
+    updateUserSuccess: (state: IUserState, action: PayloadAction<IUser>) => {
+      state.currentUser = action.payload
+      state.loading = false
+      state.error = null
+    },
+    updateUserFailure: (state: IUserState, action) => {
       state.error = action.payload
       state.loading = false
     },
   },
 })
 
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions
+export const {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} = userSlice.actions
+
 export const user = userSlice.name
 export const extractUserSlice = (global: RootState) => {
   return global[user]
