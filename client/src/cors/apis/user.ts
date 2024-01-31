@@ -1,5 +1,5 @@
 import { sendRequest } from "../axios"
-import { IUpdateProfileFormData } from "../types/requestTypes"
+import { IReturnMessage, IUpdateProfileFormData } from "../types/requestTypes"
 import { IUser, IUserObject } from "../types/userTypes"
 
 const userAPI = {
@@ -11,6 +11,14 @@ const userAPI = {
     })
 
     return res.user
+  },
+  deleteUser: async (): Promise<string> => {
+    const res = await sendRequest<null, IReturnMessage>({
+      route: "/user",
+      method: "DELETE",
+    })
+
+    return res.message
   },
 }
 
