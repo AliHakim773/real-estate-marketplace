@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../store"
 import { IUser, IUserState } from "../../types/userTypes"
+import { IRequestError } from "../../types/requestTypes"
 
 const initialState: IUserState = {
   currentUser: null,
@@ -32,7 +33,25 @@ export const userSlice = createSlice({
       state.loading = false
       state.error = null
     },
-    updateUserFailure: (state: IUserState, action) => {
+    updateUserFailure: (
+      state: IUserState,
+      action: PayloadAction<IRequestError>
+    ) => {
+      state.error = action.payload
+      state.loading = false
+    },
+    deleteUserStart: (state: IUserState) => {
+      state.loading = true
+    },
+    deleteUserSuccess: (state: IUserState) => {
+      state.currentUser = null
+      state.loading = false
+      state.error = null
+    },
+    deleteUserFailure: (
+      state: IUserState,
+      action: PayloadAction<IRequestError>
+    ) => {
       state.error = action.payload
       state.loading = false
     },
@@ -46,6 +65,9 @@ export const {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } = userSlice.actions
 
 export const user = userSlice.name
