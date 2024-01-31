@@ -1,7 +1,7 @@
 export interface ISendRequest<T> {
   route: string
-  method: "GET" | "POST" | "DELETE" | "PATCH"
-  body: T
+  method?: "GET" | "POST" | "DELETE" | "PATCH"
+  body?: T
 }
 
 export interface IRequestError {
@@ -15,4 +15,8 @@ export interface IUpdateProfileFormData {
   email?: string
   password?: string
   avatar?: string
+}
+
+export interface IReturnMessage {
+  message: string
 }
