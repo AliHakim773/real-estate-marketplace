@@ -12,7 +12,7 @@ const siteRoutes = (app) => {
   // user routes
   app.use("/api/v1/user", authMiddleware, userRouter)
   // listing routes
-  app.use("/api/v1/listing", listingRouter)
+  app.use("/api/v1/listing", authMiddleware, listingRouter)
 }
 
 module.exports = siteRoutes
