@@ -7,15 +7,19 @@ const Profile: FC = () => {
     isUploading,
     fileUploadError,
     filePerc,
-    setFile,
     currentUser,
     fileRef,
+    loading,
+    error,
+    setFile,
+    handleChange,
+    handleSubmit,
   } = useLogic()
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files.length > 0) {
@@ -51,29 +55,37 @@ const Profile: FC = () => {
         <input
           type='text'
           id='username'
+          defaultValue={currentUser?.username}
           placeholder='username'
           className='border p-3 rounded-lg'
+          onChange={handleChange}
         />
         <input
           type='email'
           id='email'
+          defaultValue={currentUser?.email}
           placeholder='email'
           className='border p-3 rounded-lg'
+          onChange={handleChange}
         />
         <input
           type='password'
           id='password'
           placeholder='password'
           className='border p-3 rounded-lg'
+          onChange={handleChange}
         />
-        <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
-          Update
+        <button
+          disabled={loading}
+          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
+          {loading ? "Loading..." : "Update"}
         </button>
       </form>
       <div className='flex justify-between mt-5'>
         <span className='text-red-700 cursor-pointer'>Delete account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
+      <p className='text-red-700 mt-5'>{error && error.message}</p>
     </div>
   )
 }
