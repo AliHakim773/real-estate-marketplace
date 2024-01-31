@@ -16,6 +16,7 @@ import SignUp from "./pages/SignUp"
 // Layouts
 import Header from "./components/Header"
 import AuthRoute from "./components/AuthRoute"
+import CreateListing from "./pages/CreateListing"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path='about' element={<About />} />
       <Route element={<AuthRoute />}>
         <Route path='profile' element={<Profile />} />
+        <Route path='create-listing' element={<CreateListing />} />
       </Route>
     </Route>
   )
