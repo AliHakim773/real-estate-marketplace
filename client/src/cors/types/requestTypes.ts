@@ -11,8 +11,8 @@ export interface IRequestError {
 }
 
 export interface IUpdateProfileFormData {
-  username: string
-  email: string
-  password: string
-  avatar: string
+  username?: string
+  email?: string
+  password?: string
+  avatar?: string
 }
