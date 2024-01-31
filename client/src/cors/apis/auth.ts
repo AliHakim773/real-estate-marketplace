@@ -1,5 +1,6 @@
 import { sendRequest } from "../axios"
 import { IGoogleData, ISignInData, ISignUpData } from "../types/authTypes"
+import { IReturnMessage } from "../types/requestTypes"
 import { IUser, IUserObject } from "../types/userTypes"
 
 const authAPI = {
@@ -26,6 +27,12 @@ const authAPI = {
       body: data,
     })
     return res.user
+  },
+  signOut: async (): Promise<string> => {
+    const res = await sendRequest<null, IReturnMessage>({
+      route: "auth/signout",
+    })
+    return res.message
   },
 }
 
