@@ -14,6 +14,7 @@ const Profile: FC = () => {
     setFile,
     handleChange,
     handleSubmit,
+    handleDeleteAcount,
   } = useLogic()
 
   return (
@@ -82,7 +83,11 @@ const Profile: FC = () => {
         </button>
       </form>
       <div className='flex justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete account</span>
+        <span
+          onClick={handleDeleteAcount}
+          className='text-red-700 cursor-pointer'>
+          Delete account
+        </span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
       <p className='text-red-700 mt-5'>{error && error.message}</p>

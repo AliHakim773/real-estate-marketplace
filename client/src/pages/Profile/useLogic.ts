@@ -5,6 +5,9 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../../cors/redux/userSlice"
 import {
   UploadTaskSnapshot,
@@ -90,6 +93,27 @@ const useLogic = () => {
     }
   }
 
+  const handleDeleteAcount = async () => {
+    try {
+      dispatch(deleteUserStart())
+      await userAPI.deleteUser()
+      dispatch(deleteUserSuccess())
+    } catch (e: any) {
+      if (e.response && e.response.data) {
+        const apiError: IRequestError = e.response.data
+        dispatch(deleteUserFailure(apiError))
+      } else {
+        dispatch(
+          deleteUserFailure({
+            message: "An unexpected error occurred.",
+            statusCode: 500,
+            success: false,
+          })
+        )
+      }
+    }
+  }
+
   return {
     formData,
     isUploading,
@@ -102,6 +126,7 @@ const useLogic = () => {
     setFile,
     handleChange,
     handleSubmit,
+    handleDeleteAcount,
   }
 }
 
