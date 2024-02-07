@@ -5,25 +5,64 @@ import {
   uploadBytesResumable,
 } from "firebase/storage"
 import { app } from "../../cors/firebase"
-import { useState } from "react"
-
-interface IListingData {
-  imageUrls: string[]
-}
+import { ChangeEventHandler, useState } from "react"
+import { IListingData } from "../../cors/types/requestTypes"
+import listingAPI from "../../cors/apis/listing"
+import { useNavigate } from "react-router-dom"
 
 const useLogic = () => {
+  const navigate = useNavigate()
   const [uploading, setUploading] = useState(false)
   const [imageUploadError, setImageUploadError] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState<IListingData>({
     imageUrls: [],
+    name: "",
+    description: "",
+    address: "",
+    type: "rent",
+    bedrooms: 1,
+    bathrooms: 1,
+    regularPrice: 50,
+    discountedPrice: 0,
+    offer: false,
+    furnished: false,
+    parking: false,
   })
+  const handleChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
+    if (e.target.id === "sale" || e.target.id === "rent") {
+      setFormData({
+        ...formData,
+        type: e.target.id,
+      })
+    } else if (
+      e.target.id === "offer" ||
+      e.target.id === "furnished" ||
+      e.target.id === "parking"
+    ) {
+      setFormData({
+        ...formData,
+        [e.target.id]: (e.target as HTMLInputElement).checked,
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      })
+    }
+  }
   const [files, setFiles] = useState<FileList | null>(null)
+
   const handleOnFileChange: React.ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
     setFiles(e.target.files)
     setImageUploadError("")
   }
+
   const handleImageSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
     e
   ) => {
@@ -84,13 +123,41 @@ const useLogic = () => {
       imageUrls: formData.imageUrls.filter((_, i) => i !== index),
     })
   }
+
+  const handleListingSubmit: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async (e) => {
+    e.preventDefault()
+    if (formData.imageUrls.length < 1)
+      return setError("You need to have at least one image")
+    if (formData.regularPrice <= formData.discountedPrice)
+      return setError(
+        "Regular price cant be less than or equal to discounted price"
+      )
+    setLoading(true)
+    setError("")
+    try {
+      const result = await listingAPI.create(formData)
+      setError("")
+      navigate(`/listing/${result._id}`)
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return {
     handleImageRemove,
     handleImageSubmit,
     handleOnFileChange,
+    handleChange,
+    handleListingSubmit,
     imageUploadError,
     uploading,
     formData,
+    loading,
+    error,
   }
 }
 
