@@ -20,9 +20,9 @@ const ListingSchema = new mongoose.Schema(
     },
     discountedPrice: {
       type: Number,
-      required: "The discouned price is required",
+      default: 0,
     },
-    badrooms: {
+    bedrooms: {
       type: Number,
       required: "The badrooms number is required",
     },
