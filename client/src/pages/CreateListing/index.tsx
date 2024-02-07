@@ -5,9 +5,13 @@ const CreateListing: React.FC = () => {
     handleImageRemove,
     handleImageSubmit,
     handleOnFileChange,
+    handleChange,
+    handleListingSubmit,
     imageUploadError,
     uploading,
     formData,
+    loading,
+    error,
   } = useLogic()
 
   return (
@@ -18,6 +22,8 @@ const CreateListing: React.FC = () => {
       <form className='flex flex-col gap-4 sm:flex-row'>
         <div className='flex flex-col gap-4 flex-1'>
           <input
+            onChange={handleChange}
+            value={formData.name}
             type='text'
             placeholder='Name'
             className='border p-3 rounded-lg'
@@ -28,11 +34,15 @@ const CreateListing: React.FC = () => {
           />
           <textarea
             placeholder='Description'
+            onChange={handleChange}
+            value={formData.description}
             className='border p-3 rounded-lg'
             id='description'
             required
           />
           <input
+            onChange={handleChange}
+            value={formData.address}
             type='text'
             placeholder='Address'
             className='border p-3 rounded-lg'
@@ -41,31 +51,61 @@ const CreateListing: React.FC = () => {
           />
           <div className='flex gap-6 flex-wrap'>
             <div className='flex gap-2'>
-              <input type='checkbox' id='sale' className='w-5' />
+              <input
+                onChange={handleChange}
+                checked={formData.type === "sale"}
+                type='checkbox'
+                id='sale'
+                className='w-5'
+              />
               <label htmlFor='sale' className='select-none'>
                 Sell
               </label>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' id='rent' className='w-5' />
+              <input
+                onChange={handleChange}
+                checked={formData.type === "rent"}
+                type='checkbox'
+                id='rent'
+                className='w-5'
+              />
               <label htmlFor='rent' className='select-none'>
                 Rent
               </label>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' id='parking' className='w-5' />
+              <input
+                onChange={handleChange}
+                checked={formData.parking}
+                type='checkbox'
+                id='parking'
+                className='w-5'
+              />
               <label htmlFor='parking' className='select-none'>
                 Parking Spot
               </label>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' id='furnished' className='w-5' />
+              <input
+                onChange={handleChange}
+                checked={formData.furnished}
+                type='checkbox'
+                id='furnished'
+                className='w-5'
+              />
               <label htmlFor='furnished' className='select-none'>
                 Furnished
               </label>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' id='offer' className='w-5' />
+              <input
+                onChange={handleChange}
+                checked={formData.offer}
+                type='checkbox'
+                id='offer'
+                className='w-5'
+              />
               <label htmlFor='offer' className='select-none'>
                 Offer
               </label>
@@ -74,6 +114,8 @@ const CreateListing: React.FC = () => {
           <div className='flex flex-wrap gap-6'>
             <div className='flex items-center gap-2'>
               <input
+                onChange={handleChange}
+                value={formData.bedrooms}
                 type='number'
                 className='p-3 border border-gray-300 rounded-lg'
                 id='bedrooms'
@@ -85,6 +127,8 @@ const CreateListing: React.FC = () => {
             </div>
             <div className='flex items-center gap-2'>
               <input
+                onChange={handleChange}
+                value={formData.bathrooms}
                 type='number'
                 className='p-3 border border-gray-300 rounded-lg'
                 id='bathrooms'
@@ -96,28 +140,41 @@ const CreateListing: React.FC = () => {
             </div>
             <div className='flex items-center gap-2'>
               <input
+                onChange={handleChange}
+                value={formData.regularPrice}
                 type='number'
+                min={50}
+                max={1000000}
                 className='p-3 border border-gray-300 rounded-lg'
                 id='regularPrice'
                 required
               />
               <div className='flex flex-col items-center'>
                 <label htmlFor='regularPrice'>Regular Price</label>
-                <span className='text-xs'>{"$ / month"}</span>
+                {formData.type === "rent" && (
+                  <span className='text-xs'>{"$ / month"}</span>
+                )}
               </div>
             </div>
-            <div className='flex items-center gap-2'>
-              <input
-                type='number'
-                className='p-3 border border-gray-300 rounded-lg'
-                id='discountedPrice'
-                required
-              />
-              <div className='flex flex-col items-center'>
-                <label htmlFor='discountedPrice'>Discounted Price</label>
-                <span className='text-xs'>{"$ / month"}</span>
+            {formData.offer && (
+              <div className='flex items-center gap-2'>
+                <input
+                  onChange={handleChange}
+                  value={formData.discountedPrice}
+                  type='number'
+                  max={1000000}
+                  className='p-3 border border-gray-300 rounded-lg'
+                  id='discountedPrice'
+                  required
+                />
+                <div className='flex flex-col items-center'>
+                  <label htmlFor='discountedPrice'>Discounted Price</label>
+                  {formData.type === "rent" && (
+                    <span className='text-xs'>{"$ / month"}</span>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className='flex flex-col gap-4 flex-1'>
@@ -165,9 +222,13 @@ const CreateListing: React.FC = () => {
                 </button>
               </div>
             ))}
-          <button className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
-            Create Listing
+          <button
+            onClick={handleListingSubmit}
+            disabled={loading || uploading}
+            className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
+            {loading ? "Creating..." : "Create Listing"}
           </button>
+          {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>
       </form>
     </main>
