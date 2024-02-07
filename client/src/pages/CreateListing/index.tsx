@@ -1,6 +1,15 @@
-import { FC } from "react"
+import useLogic from "./useLogic"
 
-const CreateListing: FC = () => {
+const CreateListing: React.FC = () => {
+  const {
+    handleImageRemove,
+    handleImageSubmit,
+    handleOnFileChange,
+    imageUploadError,
+    uploading,
+    formData,
+  } = useLogic()
+
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
@@ -120,16 +129,42 @@ const CreateListing: FC = () => {
           </p>
           <div className='flex gap-4'>
             <input
+              onChange={handleOnFileChange}
               type='file'
               id='images'
               accept='image/*'
               multiple
               className='p-3 border border-gray-300 rounded w-full'
             />
-            <button className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'>
-              Upload
+            <button
+              onClick={handleImageSubmit}
+              type='button'
+              disabled={uploading}
+              className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'>
+              {uploading ? "Uploading..." : "Upload"}
             </button>
           </div>
+          <p className='text-red-700 text-sm'>{imageUploadError}</p>
+          {formData.imageUrls.length !== 0 &&
+            formData.imageUrls.map((url, index) => (
+              <div
+                key={url}
+                className='flex justify-between p-3 border item-center'>
+                <img
+                  src={url}
+                  alt='Listing Image'
+                  className='w-20 h-20 object-contain rounded-lg'
+                />
+                <button
+                  type='button'
+                  onClick={() => {
+                    handleImageRemove(index)
+                  }}
+                  className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'>
+                  Delete
+                </button>
+              </div>
+            ))}
           <button className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
             Create Listing
           </button>
