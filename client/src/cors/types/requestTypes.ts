@@ -20,3 +20,23 @@ export interface IUpdateProfileFormData {
 export interface IReturnMessage {
   message: string
 }
+
+export interface IListingData {
+  name: string
+  description: string
+  address: string
+  regularPrice: number
+  discountedPrice: number
+  bedrooms: number
+  bathrooms: number
+  furnished: boolean
+  parking: boolean
+  type: "rent" | "sale"
+  offer: boolean
+  imageUrls: string[]
+  user?: string
+  _id?: string
+  createdAt?: string
+  updatedAt?: string
+  __v?: number
+}
