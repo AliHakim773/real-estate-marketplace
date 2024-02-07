@@ -21,7 +21,10 @@ export const userSlice = createSlice({
       state.loading = false
       state.error = null
     },
-    signInFailure: (state: IUserState, action) => {
+    signInFailure: (
+      state: IUserState,
+      action: PayloadAction<IRequestError>
+    ) => {
       state.error = action.payload
       state.loading = false
     },
