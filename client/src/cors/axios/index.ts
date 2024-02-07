@@ -3,12 +3,12 @@ import { ISendRequest } from "../types/requestTypes"
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
-export const sendRequest = async <T, Y>({
+export const sendRequest = async <TRequest, TResponse>({
   route,
   method = "GET",
   body,
-}: ISendRequest<T>): Promise<Y> => {
-  const response: AxiosResponse<Y> = await axios.request({
+}: ISendRequest<TRequest>): Promise<TResponse> => {
+  const response: AxiosResponse<TResponse> = await axios.request({
     url: route,
     method,
     data: body,
