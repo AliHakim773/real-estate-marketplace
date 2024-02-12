@@ -1,5 +1,9 @@
 import { sendRequest } from "../axios"
-import { IReturnMessage, IUpdateProfileFormData } from "../types/requestTypes"
+import {
+  IListingData,
+  IReturnMessage,
+  IUpdateProfileFormData,
+} from "../types/requestTypes"
 import { IUser, IUserObject } from "../types/userTypes"
 
 const userAPI = {
@@ -19,6 +23,14 @@ const userAPI = {
     })
 
     return res.message
+  },
+  getUserListing: async (): Promise<IListingData[]> => {
+    const res = await sendRequest<null, IListingData[]>({
+      route: "/user/listing",
+      method: "GET",
+    })
+
+    return res
   },
 }
 
