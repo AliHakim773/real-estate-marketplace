@@ -1,3 +1,4 @@
+const Listing = require("../models/listing.model")
 const User = require("../models/user.model")
 
 const updateUser = async (req, res, next) => {
@@ -30,8 +31,18 @@ const deleteUser = async (req, res) => {
       .status(200)
       .send({ message: "User has been deleted!" })
   } catch (error) {
-    rnext(error)
+    return next(error)
   }
 }
 
-module.exports = { updateUser, deleteUser }
+const getUserListing = async (req, res, next) => {
+  const id = req.user._id
+  try {
+    const listing = await Listing.find({ user: id })
+    return res.status(200).send(listing)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+module.exports = { updateUser, deleteUser, getUserListing }
