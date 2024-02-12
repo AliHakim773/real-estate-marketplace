@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
       req.user = user
       next()
     } catch {
-      next(errorHandler(403, "Token expired"))
+      next(errorHandler(403, "Token error"))
     }
   }
 }
