@@ -20,6 +20,7 @@ const Profile: FC = () => {
     handleDeleteAcount,
     handleSignOut,
     handleShowListings,
+    handleDeleteListing,
   } = useLogic()
 
   return (
@@ -129,7 +130,13 @@ const Profile: FC = () => {
                   <p>{listing.name}</p>
                 </Link>
                 <div className='flex flex-col items-center'>
-                  <button className='text-red-700 uppercase'>Delete</button>
+                  <button
+                    className='text-red-700 uppercase'
+                    onClick={() => {
+                      if (listing._id) handleDeleteListing(listing._id)
+                    }}>
+                    Delete
+                  </button>
                   <button className='text-green-700 uppercase'>Edit</button>
                 </div>
               </div>

@@ -24,6 +24,7 @@ import {
 } from "../../cors/types/requestTypes"
 import userAPI from "../../cors/apis/user"
 import authAPI from "../../cors/apis/auth"
+import listingAPI from "../../cors/apis/listing"
 
 const useLogic = () => {
   const dispatch = useAppDispatch()
@@ -147,6 +148,13 @@ const useLogic = () => {
     }
   }
 
+  const handleDeleteListing = async (id: string) => {
+    try {
+      await listingAPI.delete(id)
+      setUserListing((prev) => prev.filter((listing) => listing._id !== id))
+    } catch {}
+  }
+
   return {
     formData,
     isUploading,
@@ -164,6 +172,7 @@ const useLogic = () => {
     handleDeleteAcount,
     handleSignOut,
     handleShowListings,
+    handleDeleteListing,
   }
 }
 
