@@ -1,5 +1,5 @@
 import { sendRequest } from "../axios"
-import { IListingData } from "../types/requestTypes"
+import { IListingData, IReturnMessage } from "../types/requestTypes"
 
 const listingAPI = {
   create: async (data: IListingData) => {
@@ -9,6 +9,13 @@ const listingAPI = {
       body: data,
     })
     return res
+  },
+  delete: async (id: string) => {
+    const res = await sendRequest<null, IReturnMessage>({
+      route: `listing/${id}`,
+      method: "DELETE",
+    })
+    return res.message
   },
 }
 
