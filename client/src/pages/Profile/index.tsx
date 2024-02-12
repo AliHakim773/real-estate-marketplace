@@ -12,11 +12,14 @@ const Profile: FC = () => {
     fileRef,
     loading,
     error,
+    showListingError,
+    userListing,
     setFile,
     handleChange,
     handleSubmit,
     handleDeleteAcount,
     handleSignOut,
+    handleShowListings,
   } = useLogic()
 
   return (
@@ -100,6 +103,40 @@ const Profile: FC = () => {
         </span>
       </div>
       <p className='text-red-700 mt-5'>{error && error.message}</p>
+      <button onClick={handleShowListings} className='text-green-700 w-full'>
+        {showListingError
+          ? "Error in listing, please try again"
+          : "Show Listings"}
+      </button>
+      {userListing.length > 0 && (
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-center mt-6 text-2xl font-semibold'>Listings</h2>
+          {userListing.map((listing) => {
+            return (
+              <div
+                className='border p-3 rounded-lg flex justify-between items-center gap-4'
+                key={listing._id}>
+                <Link to={`/listing/${listing._id}`}>
+                  <img
+                    src={listing.imageUrls[0]}
+                    alt='listing cover'
+                    className='h-16 w-16 object-contain'
+                  />
+                </Link>
+                <Link
+                  className='text-slate-700 font-semibold flex-1 hover:underline truncate'
+                  to={`/listing/${listing._id}`}>
+                  <p>{listing.name}</p>
+                </Link>
+                <div className='flex flex-col items-center'>
+                  <button className='text-red-700 uppercase'>Delete</button>
+                  <button className='text-green-700 uppercase'>Edit</button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

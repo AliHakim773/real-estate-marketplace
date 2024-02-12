@@ -18,6 +18,7 @@ import {
 } from "firebase/storage"
 import { app } from "../../cors/firebase"
 import {
+  IListingData,
   IRequestError,
   IUpdateProfileFormData,
 } from "../../cors/types/requestTypes"
@@ -33,6 +34,8 @@ const useLogic = () => {
   const [fileUploadError, setFileUploadError] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)
   const [formData, setFormData] = useState<IUpdateProfileFormData>({})
+  const [userListing, setUserListing] = useState<IListingData[]>([])
+  const [showListingError, setShowListingError] = useState(false)
 
   const handleFileUpload = (file: File): void => {
     setFileUploadError(false)
@@ -134,6 +137,16 @@ const useLogic = () => {
     }
   }
 
+  const handleShowListings = async () => {
+    setShowListingError(false)
+    try {
+      const listing = await userAPI.getUserListing()
+      setUserListing(listing)
+    } catch {
+      setShowListingError(true)
+    }
+  }
+
   return {
     formData,
     isUploading,
@@ -143,11 +156,14 @@ const useLogic = () => {
     fileRef,
     loading,
     error,
+    showListingError,
+    userListing,
     setFile,
     handleChange,
     handleSubmit,
     handleDeleteAcount,
     handleSignOut,
+    handleShowListings,
   }
 }
 
